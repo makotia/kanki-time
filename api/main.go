@@ -54,7 +54,7 @@ func create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if id, err = util.GenImage(reqBody.Text, reqBody.Type); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 	returnMap = map[string]string{

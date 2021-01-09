@@ -68,6 +68,8 @@ func GenImage(text string, imageType string) (id string, err error) {
 		imageWidth = 1000
 	case "time":
 		isTimeTemplate = true
+	case "slide":
+		break
 	default:
 		return "", errors.New("imageType is not valid")
 	}
@@ -86,8 +88,12 @@ func GenImage(text string, imageType string) (id string, err error) {
 	draw.Draw(img, img.Bounds(), image.White, image.ZP, draw.Src)
 
 	if isTimeTemplate {
-		draw.Draw(img, image.Rect(100, 100, 1820, 200), image.NewUniform(color.RGBA{255, 255, 255, 255}), image.ZP, draw.Src)
-		draw.Draw(img, image.Rect(100, 250, 1820, 880), image.NewUniform(color.RGBA{255, 255, 255, 255}), image.ZP, draw.Src)
+		draw.Draw(img, img.Bounds(), image.NewUniform(color.RGBA{14, 122, 0, 255}), image.ZP, draw.Src)
+		draw.Draw(img, image.Rect(100, 50, 1820, 250), image.NewUniform(color.RGBA{140, 168, 147, 255}), image.ZP, draw.Src)
+		draw.Draw(img, image.Rect(100, 300, 1820, 1030), image.NewUniform(color.RGBA{140, 168, 147, 255}), image.ZP, draw.Src)
+		imageHeight += 300
+	} else {
+		draw.Draw(img, img.Bounds(), image.White, image.ZP, draw.Src)
 	}
 
 	dr = &font.Drawer{
