@@ -1,4 +1,5 @@
 .DS_Store
 *.ttf
 *.out
-dist/
+api/static/*.png
+config.toml
