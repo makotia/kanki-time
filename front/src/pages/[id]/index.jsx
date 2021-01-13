@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     setShouldFetch(true)
   }, [id])
-  const imgUrl = shouldFetch ? `${process.env.apiUrl}/api/media/${id}.png` : ''
+  const imgUrl = `${process.env.apiUrl}/api/media/${id}.png`
   const apiUrl = process.env.apiUrl
   const { error } = useSWR(
     shouldFetch ? [`${process.env.apiUrl}/api/${id}`, ''] : null,
