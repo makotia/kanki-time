@@ -1,10 +1,9 @@
 const { resolve } = require('path')
-const isProd = process.env.NODE_ENV === "production"
 
 const nextConfig = {
   env: {
-    baseUrl: isProd ? '' : 'http://localhost:3000',
-    apiUrl: isProd ? '' : 'http://localhost:8080'
+    baseUrl: process.env.BASE_URL ? process.env.BASE_URL : 'http://localhost:3000',
+    apiUrl: process.env.API_URL ? process.env.API_URL : 'http://localhost:8080',
   }
 }
 
