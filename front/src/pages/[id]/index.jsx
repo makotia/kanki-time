@@ -38,6 +38,7 @@ Home.getInitialProps = ({ query }) => {
     props: {
       id: id,
       apiUrl: apiUrl,
+      imgUrl: `${apiUrl}/api/media/${id}.png`,
     },
   }
 }
