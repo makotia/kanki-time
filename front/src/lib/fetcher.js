@@ -7,6 +7,8 @@ export const fetcher = (url, token) =>
   }).then((r) => {
     if (!r.ok) {
       throw new Error(String(r.status))
+    } else if (r.body != '') {
+      return r
     }
     return r.json()
   })

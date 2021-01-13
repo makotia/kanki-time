@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import Head from 'next/head'
 
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
 import fetcher from '../../lib/fetcher'
 import styles from '../../styles/Home.module.css'
+import Meta from '../../components/meta'
 
 export default function Home() {
   const router = useRouter()
@@ -13,26 +13,31 @@ export default function Home() {
   const { id } = router.query
   useEffect(() => {
     setShouldFetch(true)
-  }, [])
-  const { data } = useSWR(
+  }, [id])
+  const imgUrl = shouldFetch ? `${process.env.apiUrl}/api/media/${id}.png` : ''
+  const apiUrl = process.env.apiUrl
+  const { error } = useSWR(
     shouldFetch ? [`${process.env.apiUrl}/api/${id}`, ''] : null,
     fetcher
   )
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        {data &&
-        <>
-          <h1 className={styles.title}>
-            { data }
-          </h1>
-        </>}
-      </main>
+    <div>
+      {(!error && imgUrl) && <>
+        <p>Fuck</p>
+        <Meta image={imgUrl} url={apiUrl} />
+      </>}
+      {error && router.push('/')}
     </div>
   )
+}
+
+Home.getInitialProps = ({ query }) => {
+  const { id } = query
+  const apiUrl = process.env.API_URL
+  return {
+    props: {
+      id: id,
+      apiUrl: apiUrl,
+    },
+  }
 }
