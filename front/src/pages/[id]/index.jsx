@@ -31,8 +31,8 @@ export default function Home() {
   )
 }
 
-Home.getInitialProps = ({ query }) => {
-  const { id } = query
+export const getServerSideProps = async (context) => {
+  const { id } = context.query
   const apiUrl = process.env.API_URL
   return {
     props: {
