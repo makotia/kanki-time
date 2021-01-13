@@ -1,9 +1,6 @@
-export const fetcher = (url, token) =>
+export const fetcher = (url) =>
   fetch(url, {
     method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
   }).then((r) => {
     if (!r.ok) {
       throw new Error(String(r.status))
