@@ -22,9 +22,9 @@ export default function Home() {
   )
   return (
     <div>
+      <Meta image={imgUrl} url={apiUrl} />
       {(!error && imgUrl) && <>
         <p>Fuck</p>
-        <Meta image={imgUrl} url={apiUrl} />
       </>}
       {error && router.push('/')}
     </div>
