@@ -16,6 +16,7 @@ import (
 
 func main() {
 	http.HandleFunc("/api/", handler)
+	http.Handle("/api/media/", http.StripPrefix("/api/media/", http.FileServer(http.Dir(config.GetConfig().Server.StaticDir))))
 
 	http.ListenAndServe(":8080", nil)
 }
