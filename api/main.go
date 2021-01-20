@@ -22,8 +22,16 @@ func main() {
 
 	http.HandleFunc("/api/", handler)
 	http.Handle("/api/media/", http.StripPrefix("/api/media/", http.FileServer(http.Dir(config.GetConfig().Server.StaticDir))))
+	http.HandleFunc("/", defaultHandler)
 
 	http.ListenAndServe(*addr, nil)
+}
+
+func defaultHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+	w.WriteHeader(200)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
