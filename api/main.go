@@ -35,10 +35,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-	w.Header().Set("Content-Type", "application/json")
 
 	switch r.Method {
 	case "GET":
+		w.Header().Set("Content-Type", "application/json")
 		p = strings.Split(r.URL.Path, "/")
 		if _, err = os.Stat(path.Join(config.GetConfig().Server.StaticDir, p[len(p)-1]+".png")); err != nil {
 			if os.IsNotExist(err) {
@@ -47,6 +47,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	case "POST":
+		w.Header().Set("Content-Type", "application/json")
 		type reqJSON struct {
 			Text string `json:"Text"`
 			Type string `json:"Type"`
