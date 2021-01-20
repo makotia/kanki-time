@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
 	"net/http"
@@ -15,10 +16,12 @@ import (
 )
 
 func main() {
+	var addr = flag.String("addr", ":8080", "TCP address to listen to")
+
 	http.HandleFunc("/api/", handler)
 	http.Handle("/api/media/", http.StripPrefix("/api/media/", http.FileServer(http.Dir(config.GetConfig().Server.StaticDir))))
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(*addr, nil)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
