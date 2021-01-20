@@ -20,9 +20,9 @@ func main() {
 
 	flag.Parse()
 
+	http.HandleFunc("/", defaultHandler)
 	http.HandleFunc("/api/", handler)
 	http.Handle("/api/media/", http.StripPrefix("/api/media/", http.FileServer(http.Dir(config.GetConfig().Server.StaticDir))))
-	http.HandleFunc("/", defaultHandler)
 
 	http.ListenAndServe(*addr, nil)
 }
