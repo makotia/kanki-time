@@ -1,48 +1,40 @@
-import React, { useState, useEffect } from 'react'
-
-import useSWR from 'swr'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
-import fetcher from '../../lib/fetcher'
-import styles from '../../styles/Home.module.css'
-import Meta from '../../components/meta'
-
-export default function Home({ id, apiUrl, imgUrl, succeed }) {
+export default function Home({ id }) {
+  const url = process.env.baseUrl
   console.log(id)
-  console.log(apiUrl)
-  console.log(imgUrl)
-  console.log(succeed)
   return (
     <div>
-      <Meta image={imgUrl} url={apiUrl} />
-      {/* {!succeed && router.push('/')} */}
+      <Head>
+        <title>換気タイム</title>
+        <link rel="icon" href="/favicon.ico" />
+        <meta property="og:title" content="換気タイム" />
+        <meta property="og:site_name" content="換気タイム" />
+        <meta name="twitter:title" content="換気タイム" />
+        <meta name="twitter:description" content="換気タイム" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@0x307E" />
+        <meta name="twitter:url" content={url} />
+        <meta property="og:url" content={url} />
+        <meta property="og:description" content="換気タイム" />
+        <meta property="og:image" content={`${process.env.apiUrl}/${id}.png`} />
+        <meta name="twitter:image" content={`${process.env.apiUrl}/${id}.png`} />
+      </Head>
     </div>
   )
 }
 
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: true,
-  }
-}
-
 export const getStaticProps = async (context) => {
   const id = context.params.id
-
-  const { error } = useSWR(
-    shouldFetch ? [`${process.env.apiUrl}/api/${id}`, ''] : null,
-    fetcher
-  )
-  const apiUrl = process.env.API_URL
-
   return {
-    props: {
-      id: id,
-      apiUrl: apiUrl,
-      imgUrl: `${apiUrl}/api/media/${id}.png`,
-      succeed: !error,
-    },
-    revalidate: 60,
+    props: { id },
+    revalidate: 1,
   }
 }
+
+export const getStaticPaths = async () => ({
+  paths: [{params: {id: '1'}}],
+  fallback: true,
+})
