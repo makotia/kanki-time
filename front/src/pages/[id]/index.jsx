@@ -19,8 +19,8 @@ export default function Home({ id }) {
         <meta name="twitter:url" content={url} />
         <meta property="og:url" content={url} />
         <meta property="og:description" content="換気タイム" />
-        <meta property="og:image" content={`${process.env.apiUrl}/${id}.png`} />
-        <meta name="twitter:image" content={`${process.env.apiUrl}/${id}.png`} />
+        <meta property="og:image" content={`${process.env.apiUrl}/api/media/${id}.png`} />
+        <meta name="twitter:image" content={`${process.env.apiUrl}/api/media/${id}.png`} />
       </Head>
     </div>
   )
