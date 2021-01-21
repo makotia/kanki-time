@@ -22,6 +22,7 @@ import (
 
 func main() {
 	var addr = flag.String("addr", ":8080", "TCP address to listen to")
+	flag.Parse()
 	e := echo.New()
 	e.Use(middleware.RequestID())
 	e.Use(logger())
