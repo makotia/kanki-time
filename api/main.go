@@ -16,11 +16,12 @@ import (
 )
 
 func main() {
-	var addr = flag.String("addr", ":1323", "TCP address to listen to")
+	var addr = flag.String("addr", ":8080", "TCP address to listen to")
 
 	flag.Parse()
 
 	http.HandleFunc("/", defaultHandler)
+	http.HandleFunc("/api", handler)
 	http.HandleFunc("/api/", handler)
 	http.Handle("/api/media/", http.StripPrefix("/api/media/", http.FileServer(http.Dir(config.GetConfig().Server.StaticDir))))
 
