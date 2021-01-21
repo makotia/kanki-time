@@ -40,6 +40,7 @@ func main() {
 		api.GET("/:id", getHandler)
 		api.POST("", createHandler)
 		api.OPTIONS("*", optionsHandler)
+		api.Static("/media", path.Join(config.GetConfig().Server.StaticDir))
 	}
 	e.Logger.Fatal(e.Start(*addr))
 }
