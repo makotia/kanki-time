@@ -38,7 +38,7 @@ func main() {
 	api := e.Group("/api")
 	{
 		api.GET("/:id", getHandler)
-		api.POST("/", createHandler)
+		api.POST("", createHandler)
 		api.OPTIONS("*", optionsHandler)
 	}
 	e.Logger.Fatal(e.Start(*addr))
