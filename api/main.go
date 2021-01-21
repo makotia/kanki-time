@@ -32,10 +32,12 @@ func main() {
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete, http.MethodOptions},
 	}))
+
 	api := e.Group("/api")
 	{
 		api.GET("/:id", getHandler)
 		api.POST("/", createHandler)
+		api.OPTIONS("*", optionsHandler)
 	}
 	e.Logger.Fatal(e.Start(*addr))
 }
@@ -46,6 +48,10 @@ func getHandler(c echo.Context) (err error) {
 			return c.NoContent(http.StatusNotFound)
 		}
 	}
+	return c.NoContent(http.StatusOK)
+}
+
+func optionsHandler(c echo.Context) (err error) {
 	return c.NoContent(http.StatusOK)
 }
 
