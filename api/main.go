@@ -82,9 +82,13 @@ func createHandler(c echo.Context) (err error) {
 }
 
 func toMap(id string, err error) map[string]string {
+	var errMsg string
+	if err != nil {
+		errMsg = err.Error()
+	}
 	return map[string]string{
 		"id":    id,
-		"error": err.Error(),
+		"error": errMsg,
 	}
 }
 
