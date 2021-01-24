@@ -46,7 +46,7 @@ export default function Home() {
 
     if (!(state.line1.isError || state.line2.isError)) {
       const body = {
-        Text: [state.textLine1, state.textLine2].join('\n'),
+        Text: [state.line1.text, state.line2.text].join('\n'),
         Type: state.useTemplate ? 'time' : 'slide',
       }
       fetch(`${process.env.apiUrl}/api`, {
