@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
 export default function Home({ id }) {
   const url = process.env.baseUrl
+  const router = useRouter()
+  useEffect(() => router.push('/'))
   return (
     <div>
       <Head>
