@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
 export default function Home({ id }) {
   const url = process.env.baseUrl
-  console.log(id)
   return (
     <div>
       <Head>
@@ -36,5 +35,5 @@ export const getStaticProps = async (context) => {
 
 export const getStaticPaths = async () => ({
   paths: [{params: {id: '1'}}],
-  fallback: true,
+  fallback: 'blocking',
 })
