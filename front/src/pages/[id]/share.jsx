@@ -1,45 +1,21 @@
 import React from 'react'
+import { useRouter } from 'next/router'
 
-import useSWR from 'swr'
-import fetcher from '../../lib/fetcher'
-import Meta from '../../components/meta'
+import styles from '../../styles/Share.module.css'
 
-export default function Home({ id, apiUrl, imgUrl, succeed }) {
-  console.log(id)
-  console.log(apiUrl)
-  console.log(imgUrl)
-  console.log(succeed)
+export default function Share() {
+  const router = useRouter()
+  const { id } = router.query
   return (
-    <div>
-      <Meta image={imgUrl} url={apiUrl} />
-      {/* {!succeed && router.push('/')} */}
+    <div className={styles.container}>
+      <div>
+        <img className={styles.img} src={`${process.env.apiUrl}/api/media/${id}.png`} />
+        <div className={styles.share}>
+          <a className={styles.twBtn} target='_blank' href={`https://twitter.com/share?url=${encodeURI(process.env.baseUrl)}/${id}&text=オリジナルの換気タイムを作ろう！&related=0x307E`}>
+            Twitter にシェアする
+        </a>
+        </div>
+      </div>
     </div>
   )
-}
-
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: true,
-  }
-}
-
-export const getStaticProps = async (context) => {
-  const id = context.params.id
-
-  const { error } = useSWR(
-    shouldFetch ? [`${process.env.apiUrl}/api/${id}`, ''] : null,
-    fetcher
-  )
-  const apiUrl = process.env.API_URL
-
-  return {
-    props: {
-      id: id,
-      apiUrl: apiUrl,
-      imgUrl: `${apiUrl}/api/media/${id}.png`,
-      succeed: !error,
-    },
-    revalidate: 60,
-  }
 }

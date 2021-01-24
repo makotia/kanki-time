@@ -1,65 +1,93 @@
+import React, { useState } from 'react'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
+  const [state, setState] = useState({
+    useTemplate: false,
+    line1: {
+      text: '',
+      isError: false,
+    },
+    line2: {
+      text: '',
+      isError: false,
+    },
+  })
+
+  const router = useRouter()
+
+  const setLine1 = (str) => {
+    let s = state
+    s.line1.text = str
+    setState(s)
+  }
+
+  const setLine2 = (str) => {
+    let s = state
+    s.line2.text = str
+    setState(s)
+  }
+
+  const submit = () => {
+    if (state.line1.text === '') {
+      let s = state
+      s.line1.isError = true
+      setState(!!s.line1.isError)
+    }
+
+    if (state.line2.text === '') {
+      let s = state
+      s.line2.isError = true
+      setState(!state.line2.isError)
+    }
+
+    if (!(state.line1.isError || state.line2.isError)) {
+      const body = {
+        Text: [state.textLine1, state.textLine2].join('\n'),
+        Type: state.useTemplate ? 'time' : 'slide',
+      }
+      fetch(`${process.env.apiUrl}/api`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+      })
+      .then(res => res.json())
+      .then(json => router.push(`/${json.id}/share`))
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>換気タイム</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          さまざまな「タイム」を作成しよう！
         </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
+        <form className={styles.forms}>
+          <label>
+            {state.line1.isError && <span>2行目が入力されていません</span>}
+            <input type="text" name="name" value={state.textLine1} onChange={(e) => setLine1(e.target.value)} placeholder="換気" />
+          </label>
+          <label>
+            {state.line2.isError && <span>2行目が入力されていません</span>}
+            <input type="text" name="name" value={state.textLine2} onChange={(e) => setLine2(e.target.value)} placeholder="タイム" />
+          </label>
+          <label>
+            <input type="checkbox" name="useTemplate" value={state.useTemplate} onChange={() => setUseTemplate(!state.useTemplate)} />
+            スライドのテンプレートを使う
+          </label>
+        </form>
+        <a className={styles.submitBtn} onClick={submit}>
+          確定
         </a>
-      </footer>
+      </main>
     </div>
   )
 }
