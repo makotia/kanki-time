@@ -13,7 +13,7 @@ export default function Share() {
         <div className={styles.share}>
           <a className={styles.twBtn} target='_blank' href={`https://twitter.com/share?url=${encodeURI(process.env.baseUrl)}/${id}&text=オリジナルの換気タイムを作ろう！&related=0x307E`}>
             Twitter にシェアする
-        </a>
+          </a>
         </div>
       </div>
     </div>
