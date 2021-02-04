@@ -15,6 +15,7 @@ import (
 	"unicode"
 
 	"github.com/golang/freetype/truetype"
+	"github.com/ktnyt/go-moji"
 	"github.com/makotia/kanki-time/api/config"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
@@ -111,23 +112,19 @@ func GenImage(text string, imageType string) (id string, err error) {
 
 	for _, t := range textArr {
 		var (
-			textWidth int  = 0
-			beforeHan bool = false
+			textWidth int = 0
 		)
 
-		for i, str := range t {
-			textWidth += int(calcMargin(str, beforeHan, i == 0) * fontSize)
-			beforeHan = unicode.In(str, unicode.Han)
-		}
+		t := moji.Convert(t, moji.HE, moji.ZE)
 
-		beforeHan = false
+		textWidth = len(t) * int(fontSize) / 3
+
 		x := imageWidth/2 - (textWidth / 2)
 
-		for i, str := range t {
+		for _, str := range t {
 			dr.Dot = fixed.P(x, y)
 			dr.DrawString(string(str))
-			x += int(calcMargin(str, beforeHan, i == 0) * fontSize)
-			beforeHan = unicode.In(str, unicode.Han)
+			x += int(fontSize)
 		}
 		y += dy
 	}
