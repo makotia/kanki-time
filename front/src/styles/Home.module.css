@@ -20,12 +20,13 @@
   text-align: center;
 }
 
-.forms input[type='text'] {
+.textArea {
   padding: .5rem;
   margin-bottom: .5rem;
   font-size: 1.5rem;
   width: 100%;
   border: 1.5px solid black;
+  resize: none;
 }
 
 .forms span {

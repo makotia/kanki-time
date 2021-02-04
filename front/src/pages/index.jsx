@@ -5,49 +5,19 @@ import { useRouter } from 'next/router'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
-  const [state, setState] = useState({
-    useTemplate: false,
-    line1: {
-      text: '',
-      isError: false,
-    },
-    line2: {
-      text: '',
-      isError: false,
-    },
-  })
-
+  const [text, setText] = useState('')
+  const [textError, setTextError] = useState(false)
+  const [useTemplate, setUseTemplate] = useState(false)
   const router = useRouter()
 
-  const setLine1 = (str) => {
-    let s = state
-    s.line1.text = str
-    setState(s)
-  }
-
-  const setLine2 = (str) => {
-    let s = state
-    s.line2.text = str
-    setState(s)
-  }
-
   const submit = () => {
-    if (state.line1.text === '') {
-      let s = state
-      s.line1.isError = true
-      setState(!!s.line1.isError)
-    }
-
-    if (state.line2.text === '') {
-      let s = state
-      s.line2.isError = true
-      setState(!state.line2.isError)
-    }
-
-    if (!(state.line1.isError || state.line2.isError)) {
+    if (text === '') {
+      setTextError(true)
+      return
+    } else {
       const body = {
-        Text: [state.line1.text, state.line2.text].join('\n'),
-        Type: state.useTemplate ? 'time' : 'slide',
+        Text: text,
+        Type: useTemplate ? 'time' : 'slide',
       }
       fetch(`${process.env.apiUrl}/api`, {
         method: 'POST',
@@ -72,15 +42,11 @@ export default function Home() {
         </h1>
         <form className={styles.forms}>
           <label>
-            {state.line1.isError && <span>2行目が入力されていません</span>}
-            <input type="text" name="name" value={state.textLine1} onChange={(e) => setLine1(e.target.value)} placeholder="換気" />
+            <span>{ textError ? 'お好みのタイムを入力してください' : '' }</span>
+            <textarea className={styles.textArea} name="text" id="text" value={text} placeholder={'換気\nタイム'} onChange={(e) => setText(e.target.value)} />
           </label>
           <label>
-            {state.line2.isError && <span>2行目が入力されていません</span>}
-            <input type="text" name="name" value={state.textLine2} onChange={(e) => setLine2(e.target.value)} placeholder="タイム" />
-          </label>
-          <label>
-            <input type="checkbox" name="useTemplate" value={state.useTemplate} onChange={() => setUseTemplate(!state.useTemplate)} />
+            <input type="checkbox" name="useTemplate" value={useTemplate} onChange={() => setUseTemplate(!useTemplate)} />
             スライドのテンプレートを使う
           </label>
         </form>
