@@ -37,7 +37,7 @@ func GenImage(text string, imageType string) (id string, err error) {
 		defaultFontSize float64 = 200.0
 		fontSize                = defaultFontSize
 		imageWidth      int     = 1920
-		imageHeight     int     = 1080
+		imageHeight     int     = 1005
 		isTimeTemplate  bool    = false
 		opt             truetype.Options
 		img             *image.RGBA
@@ -73,8 +73,8 @@ func GenImage(text string, imageType string) (id string, err error) {
 
 	if isTimeTemplate {
 		draw.Draw(img, img.Bounds(), image.NewUniform(color.RGBA{14, 122, 0, 255}), image.ZP, draw.Src)
-		draw.Draw(img, image.Rect(100, 50, 1820, 250), image.NewUniform(color.RGBA{140, 168, 147, 255}), image.ZP, draw.Src)
-		draw.Draw(img, image.Rect(100, 300, 1820, 1030), image.NewUniform(color.RGBA{140, 168, 147, 255}), image.ZP, draw.Src)
+		draw.Draw(img, image.Rect(50, 50, 1870, 250), image.NewUniform(color.RGBA{140, 168, 147, 255}), image.ZP, draw.Src)
+		draw.Draw(img, image.Rect(50, 300, 1870, 958), image.NewUniform(color.RGBA{140, 168, 147, 255}), image.ZP, draw.Src)
 		imageHeight += 300
 	} else {
 		draw.Draw(img, img.Bounds(), image.White, image.ZP, draw.Src)
