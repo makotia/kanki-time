@@ -12,7 +12,6 @@ import (
 	"os"
 	"path"
 	"strings"
-	"unicode"
 
 	"github.com/golang/freetype/truetype"
 	"github.com/ktnyt/go-moji"
@@ -21,9 +20,7 @@ import (
 	"golang.org/x/image/math/fixed"
 )
 
-var (
-	ft *truetype.Font
-)
+var ft *truetype.Font
 
 func init() {
 	ftBinary, err := ioutil.ReadFile(config.GetConfig().Server.TTFPath)
@@ -31,20 +28,6 @@ func init() {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
-	}
-}
-
-func calcMargin(r rune, beforeHan bool, first bool) float64 {
-	if beforeHan || first {
-		if unicode.In(r, unicode.Han) {
-			return 1
-		} else if first {
-			return 0.8
-		} else {
-			return 0.75
-		}
-	} else {
-		return 0.8
 	}
 }
 
