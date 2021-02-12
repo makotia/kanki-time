@@ -2,9 +2,10 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
-export default function Home({ id }) {
+export default function Home({ text, type }) {
   const url = process.env.baseUrl
   const router = useRouter()
+  const imgURL = `${process.env.apiUrl}/api/?Text=${text}&Type=${type}`
   useEffect(() => router.push('/'))
   return (
     <div>
@@ -20,22 +21,22 @@ export default function Home({ id }) {
         <meta name="twitter:url" content={url} />
         <meta property="og:url" content={url} />
         <meta property="og:description" content="換気タイム" />
-        <meta property="og:image" content={`${process.env.apiUrl}/api/media/${id}.png`} />
-        <meta name="twitter:image" content={`${process.env.apiUrl}/api/media/${id}.png`} />
+        <meta property="og:image" content={imgURL} />
+        <meta name="twitter:image" content={imgURL} />
       </Head>
     </div>
   )
 }
 
 export const getStaticProps = async (context) => {
-  const id = context.params.id
+  const { text, type } = context.params
   return {
-    props: { id },
-    revalidate: 1,
+    props: { text, type },
+    revalidate: 100,
   }
 }
 
 export const getStaticPaths = async () => ({
-  paths: [{params: {id: '1'}}],
+  paths: [{params: {text: '', type: ''}}],
   fallback: 'blocking',
 })

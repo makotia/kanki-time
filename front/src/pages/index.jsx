@@ -15,17 +15,7 @@ export default function Home() {
       setTextError(true)
       return
     } else {
-      const body = {
-        Text: text,
-        Type: useTemplate ? 'time' : 'slide',
-      }
-      fetch(`${process.env.apiUrl}/api`, {
-        method: 'POST',
-        body: JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
-      })
-      .then(res => res.json())
-      .then(json => router.push(`/${json.id}/share`))
+      router.push(`/image/${useTemplate ? 'time' : 'slide'}/${text.replace('\n', ',')}/share`)
     }
   }
 
