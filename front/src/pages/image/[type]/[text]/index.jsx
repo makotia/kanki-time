@@ -5,7 +5,7 @@ import Head from 'next/head'
 export default function Home({ text, type }) {
   const url = process.env.baseUrl
   const router = useRouter()
-  const imgURL = `${process.env.apiUrl}/api/?Text=${text}&Type=${type}`
+  const imgURL = `${process.env.apiUrl}/api/image?Text=${text}&Type=${type}`
   useEffect(() => router.push('/'))
   return (
     <div>
