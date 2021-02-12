@@ -5,10 +5,13 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"image"
+	"image/png"
 	"io"
 	"net/http"
 	"os"
 	"path"
+	"strings"
 	"sync"
 	"time"
 
@@ -41,6 +44,7 @@ func main() {
 		api.POST("", createHandler)
 		api.OPTIONS("*", optionsHandler)
 		api.Static("/media", path.Join(config.GetConfig().Server.StaticDir))
+		api.GET("/image", getImage)
 	}
 	e.Logger.Fatal(e.Start(*addr))
 }
@@ -52,6 +56,20 @@ func getHandler(c echo.Context) (err error) {
 		}
 	}
 	return c.NoContent(http.StatusOK)
+}
+
+func getImage(c echo.Context) (err error) {
+	var (
+		buf bytes.Buffer
+		img *image.RGBA
+	)
+	if img, err = util.GenImage(strings.ReplaceAll(c.QueryParam("Text"), ",", "\n"), c.QueryParam("Type")); err != nil {
+		return c.JSON(http.StatusInternalServerError, toMap("", err))
+	}
+	if err = png.Encode(&buf, img); err != nil {
+		return c.JSON(http.StatusInternalServerError, toMap("", err))
+	}
+	return c.Blob(http.StatusOK, "image/png", buf.Bytes())
 }
 
 func optionsHandler(c echo.Context) (err error) {
@@ -68,6 +86,7 @@ func createHandler(c echo.Context) (err error) {
 		id      string
 		reqBody reqJSON
 		buf     bytes.Buffer
+		img     *image.RGBA
 	)
 
 	io.Copy(&buf, c.Request().Body)
@@ -76,7 +95,10 @@ func createHandler(c echo.Context) (err error) {
 		return c.JSON(http.StatusInternalServerError, toMap(id, err))
 	}
 
-	if id, err = util.GenImage(reqBody.Text, reqBody.Type); err != nil {
+	if img, err = util.GenImage(reqBody.Text, reqBody.Type); err != nil {
+		return c.JSON(http.StatusInternalServerError, toMap(id, err))
+	}
+	if id, err = util.SaveImage(img); err != nil {
 		return c.JSON(http.StatusInternalServerError, toMap(id, err))
 	}
 	return c.JSON(http.StatusOK, toMap(id, err))

@@ -31,8 +31,28 @@ func init() {
 	}
 }
 
+// SaveImage is save png to local
+func SaveImage(img *image.RGBA) (id string, err error) {
+	var (
+		buf  bytes.Buffer
+		file *os.File
+	)
+	id = genToken()
+	if err = png.Encode(&buf, img); err != nil {
+		return "", err
+	}
+	file, err = os.Create(path.Join(config.GetConfig().Server.StaticDir, id+".png"))
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	file.Write(buf.Bytes())
+	return id, err
+}
+
 // GenImage is generate text
-func GenImage(text string, imageType string) (id string, err error) {
+func GenImage(text string, imageType string) (img *image.RGBA, err error) {
 	var (
 		defaultFontSize float64 = 200.0
 		fontSize                = defaultFontSize
@@ -40,10 +60,7 @@ func GenImage(text string, imageType string) (id string, err error) {
 		imageHeight     int     = 1005
 		isTimeTemplate  bool    = false
 		opt             truetype.Options
-		img             *image.RGBA
 		dr              *font.Drawer
-		buf             bytes.Buffer
-		file            *os.File
 	)
 
 	switch imageType {
@@ -55,10 +72,8 @@ func GenImage(text string, imageType string) (id string, err error) {
 	case "slide":
 		break
 	default:
-		return "", errors.New("imageType is not valid")
+		return nil, errors.New("imageType is not valid")
 	}
-
-	id = genToken()
 	opt = truetype.Options{
 		Size:              defaultFontSize,
 		DPI:               0,
@@ -111,15 +126,5 @@ func GenImage(text string, imageType string) (id string, err error) {
 		}
 		y += dy
 	}
-	if err = png.Encode(&buf, img); err != nil {
-		return "", err
-	}
-	file, err = os.Create(path.Join(config.GetConfig().Server.StaticDir, id+".png"))
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	file.Write(buf.Bytes())
-	return id, err
+	return img, err
 }
