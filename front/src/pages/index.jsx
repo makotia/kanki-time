@@ -15,7 +15,7 @@ export default function Home() {
       setTextError(true)
       return
     } else {
-      router.push(`/image/${useTemplate ? 'time' : 'slide'}/${text.replace('\n', ',')}/share`)
+      router.push(`/image/${useTemplate ? 'time' : 'slide'}/${text.replaceAll('\n', ',')}/share`)
     }
   }
 
