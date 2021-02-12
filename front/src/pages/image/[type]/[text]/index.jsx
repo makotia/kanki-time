@@ -37,6 +37,6 @@ export const getStaticProps = async (context) => {
 }
 
 export const getStaticPaths = async () => ({
-  paths: [{params: {text: '', type: ''}}],
+  paths: [{params: {text: '換気,タイム', type: 'slide'}}],
   fallback: 'blocking',
 })
