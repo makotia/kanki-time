@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import styles from '../styles/Home.module.css'
+import styles from '@/styles/Home.module.css'
 
-export default function Home() {
+const Home = () => {
   const [text, setText] = useState('')
   const [textError, setTextError] = useState(false)
   const [useTemplate, setUseTemplate] = useState(false)
@@ -36,7 +36,7 @@ export default function Home() {
             <textarea className={styles.textArea} name="text" id="text" value={text} placeholder={'換気\nタイム'} onChange={(e) => setText(e.target.value)} />
           </label>
           <label>
-            <input type="checkbox" name="useTemplate" value={useTemplate} onChange={() => setUseTemplate(!useTemplate)} />
+            <input type="checkbox" name="useTemplate" checked={useTemplate} onChange={() => setUseTemplate(!useTemplate)} />
             スライドのテンプレートを使う
           </label>
         </form>
@@ -47,3 +47,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home

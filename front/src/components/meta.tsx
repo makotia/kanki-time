@@ -1,7 +1,12 @@
 import React from 'react'
 import Head from 'next/head'
 
-const Meta = ({ image, url }) => {
+type Props = {
+  image: string;
+  url: string;
+}
+
+const Meta: React.FC<Props> = ({ image, url }) => {
   return (
     <Head>
       <title>換気タイム</title>

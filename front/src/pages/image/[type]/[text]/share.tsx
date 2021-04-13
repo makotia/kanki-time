@@ -2,11 +2,12 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import styles from '../../../../styles/Share.module.css'
+import styles from '@/styles/Share.module.css'
+import { Props } from '@/lib/props'
 
-export default function Share() {
+const Share: React.FC = () => {
   const router = useRouter()
-  const { text, type } = router.query
+  const { text, type }: Props = router.query
   const imgURL = (text && type) ? `${process.env.apiUrl}/api/image?Text=${text}&Type=${type}` : ''
   const url = `${process.env.baseUrl}/image/${type}/${encodeURI(text)}`
   return (
@@ -27,3 +28,5 @@ export default function Share() {
     </div>
   )
 }
+
+export default Share
