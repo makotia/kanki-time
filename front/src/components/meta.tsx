@@ -1,5 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
+import { GA_TRACKING_ID } from "@/lib/gtag"
 
 type Props = {
   image: string;
@@ -22,6 +23,22 @@ const Meta: React.FC<Props> = ({ image, url }) => {
       <meta property="og:description" content="換気タイム" />
       <meta property="og:image" content={image} />
       <meta name="twitter:image" content={image} />
+      {GA_TRACKING_ID && (
+      <>
+        <script async={true} src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_TRACKING_ID}', {
+                  page_path: window.location.pathname,
+                });`,
+          }}
+        />
+      </>
+    )}
     </Head>
   )
 }
